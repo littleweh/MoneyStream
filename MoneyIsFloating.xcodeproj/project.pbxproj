@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		794F9DC620CDEE3A009A1961 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 794F9DC520CDEE3A009A1961 /* Person.m */; };
 		79A106D820C63A9C00495344 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A106D720C63A9C00495344 /* AppDelegate.m */; };
 		79A106DB20C63A9C00495344 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A106DA20C63A9C00495344 /* ViewController.m */; };
 		79A106DE20C63A9C00495344 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79A106DC20C63A9C00495344 /* Main.storyboard */; };
@@ -14,6 +15,7 @@
 		79A106E320C63A9D00495344 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79A106E120C63A9D00495344 /* LaunchScreen.storyboard */; };
 		79A106E620C63A9D00495344 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A106E520C63A9D00495344 /* main.m */; };
 		79A106F020C63A9D00495344 /* MoneyIsFloatingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A106EF20C63A9D00495344 /* MoneyIsFloatingTests.m */; };
+		79A106FC20C6415200495344 /* Record.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A106FB20C6415200495344 /* Record.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +29,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		794F9DC420CDEE3A009A1961 /* Person.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
+		794F9DC520CDEE3A009A1961 /* Person.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		79A106D320C63A9C00495344 /* MoneyIsFloating.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoneyIsFloating.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		79A106D620C63A9C00495344 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		79A106D720C63A9C00495344 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -40,6 +44,8 @@
 		79A106EB20C63A9D00495344 /* MoneyIsFloatingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoneyIsFloatingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		79A106EF20C63A9D00495344 /* MoneyIsFloatingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoneyIsFloatingTests.m; sourceTree = "<group>"; };
 		79A106F120C63A9D00495344 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		79A106FA20C6415200495344 /* Record.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Record.h; sourceTree = "<group>"; };
+		79A106FB20C6415200495344 /* Record.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Record.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +87,7 @@
 		79A106D520C63A9C00495344 /* MoneyIsFloating */ = {
 			isa = PBXGroup;
 			children = (
+				79A106FD20C6416800495344 /* Model */,
 				79A106D620C63A9C00495344 /* AppDelegate.h */,
 				79A106D720C63A9C00495344 /* AppDelegate.m */,
 				79A106D920C63A9C00495344 /* ViewController.h */,
@@ -101,6 +108,17 @@
 				79A106F120C63A9D00495344 /* Info.plist */,
 			);
 			path = MoneyIsFloatingTests;
+			sourceTree = "<group>";
+		};
+		79A106FD20C6416800495344 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				79A106FA20C6415200495344 /* Record.h */,
+				79A106FB20C6415200495344 /* Record.m */,
+				794F9DC420CDEE3A009A1961 /* Person.h */,
+				794F9DC520CDEE3A009A1961 /* Person.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,6 +223,8 @@
 			files = (
 				79A106DB20C63A9C00495344 /* ViewController.m in Sources */,
 				79A106E620C63A9D00495344 /* main.m in Sources */,
+				794F9DC620CDEE3A009A1961 /* Person.m in Sources */,
+				79A106FC20C6415200495344 /* Record.m in Sources */,
 				79A106D820C63A9C00495344 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
