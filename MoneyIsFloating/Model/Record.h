@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Person.h"
+@class Person;
 
 typedef enum : NSUInteger {
     transportation,
@@ -23,6 +23,8 @@ typedef enum : NSUInteger {
     creditCard,
     cash,
     ezCard,
+    iCash,
+    iPass,
     other
 } PaymentMode;
 
@@ -36,8 +38,11 @@ typedef enum : NSUInteger {
 @property (nonatomic, assign, readwrite) BOOL shouldSplitTheBill;
 @property (nonatomic, strong, readwrite) NSMutableArray <Person *> * billSplitPayers;
 @property (nonatomic, strong, readwrite) Person * billPayer;
-@property (nonatomic, assign, readwrite) BOOL isBillSplited;
+@property (nonatomic, assign, readwrite) BOOL isBillSplit;
 @property (nonatomic, strong, readonly) NSDate * createdDate;
+@property (nonatomic, strong, readonly) NSDate * updatedDate;
 @property (nonatomic, assign, readonly) NSUInteger identifier;
+
+-(instancetype) initWithDictionary: (NSDictionary *) dictionary;
 
 @end

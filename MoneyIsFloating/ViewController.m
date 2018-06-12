@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "SheetDBSDK.h"
 
 @interface ViewController ()
 
@@ -16,13 +17,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    [[SheetDBSDK sharedInstance] fetchAllDataWithCallback:^(NSArray <NSDictionary *>* dictionaries, NSError * error) {
+        NSLog(@"sheetDBSDK get all data called");
+        NSLog(@"%@", [NSString stringWithFormat:@"dic is %@", dictionaries]);
+    }];
+    
 }
 
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
