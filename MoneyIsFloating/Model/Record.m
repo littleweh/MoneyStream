@@ -32,7 +32,17 @@ static NSString *const keyUpdatedDate = @"updated_date";
 -(instancetype) initWithDictionary: (NSDictionary *) dictionary
 {
     if(self = [super init]) {
-        
+#warning ToDo: dictionary to Record object
+        if ([dictionary objectForKey:keyIdentifier]) {
+            _identifier = (NSUInteger)[dictionary valueForKey:keyIdentifier];
+        }
+        if ([dictionary objectForKey:keyDate]) {
+            NSString *date = [dictionary valueForKey:keyDate];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"MM/dd"];
+            NSDate *transformmedDate = [dateFormatter dateFromString:date];
+            _date = transformmedDate;
+        }
     }
     return self;
 }
