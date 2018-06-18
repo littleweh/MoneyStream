@@ -7,6 +7,8 @@
 //
 
 #import "Record.h"
+#import "Person.h"
+
 static NSString *const keyIdentifier = @"key";
 static NSString *const keyDate = @"date";
 static NSString *const keyExpCategory = @"category";
@@ -25,21 +27,71 @@ static NSString *const keyUpdatedDate = @"updated_date";
 -(instancetype) initWithDictionary: (NSDictionary *) dictionary
 {
     if(self = [super init]) {
-#warning ToDo: dictionary to Record object
         _identifier = [dictionary objectForKey:keyIdentifier] ? : @"";
 
-        if ([dictionary objectForKey:keyDate]) {
-            NSString *date = [dictionary objectForKey:keyDate];
+        NSMutableString *date = [dictionary objectForKey:keyDate];
+        if (date && ![date isEqualToString:@""]) {
+            _date = [self dateFromString:date mode:@"date"];
+        } else {
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"MM/dd"];
-            NSDate *transformmedDate = [dateFormatter dateFromString:date];
-            _date = transformmedDate;
+            [dateFormatter setDateFormat:@"yyyy/MM/dd"];
+            NSString *defaultDate = @"1900/01/01";
+            _date = [dateFormatter dateFromString:defaultDate];
         }
+
+        _store = [dictionary objectForKey:keyStore]? : @"";
+
+        NSNumber *dollarAmount = [dictionary objectForKey:keyDollarAmount];
+        _dollarAmount = dollarAmount;
+
+        _explanation = [dictionary objectForKey:keyExplanation]? : @"";
+
+        NSString *expCategoryString = [dictionary objectForKey:keyExpCategory]? :@"";
+        ExpenseCategory category = [self expCategoryFromString:expCategoryString];
+        _expCategory = category;
+
+        NSString *paymentModeString = [dictionary objectForKey:keyPaymentMode];
+        PaymentMode paymentMode = [self paymentModeFromString:paymentModeString];
+        _paymentMode = paymentMode;
+
+        NSString *shouldSplitTheBillString = [dictionary objectForKey:keyShouldSplitTheBill];
+        _shouldSplitTheBill = [self shouldSplitTheBillFromString: shouldSplitTheBillString];
+
+        NSString *isBillSplitString = [dictionary objectForKey:keyIsBillSplit];
+        _isBillSplit = [self isBillSplitFromString: isBillSplitString];
+
+        date = [dictionary objectForKey:keyCreatedDate];
+        _createdDate = [self dateFromString: date mode: @""];
+
+        date = [dictionary objectForKey:keyUpdatedDate];
+        _updatedDate = [self dateFromString: date mode: @""];
+
+        NSString * billPayerName = [dictionary objectForKey:keyBillPayer];
+        _billPayer = [self billPayerFromString: billPayerName];
+
+        NSString * billSplitPayersString = [dictionary objectForKey:keyBillSplitPayers];
+        _billSplitPayers = [self payersFromString: billSplitPayersString];
+
     }
     return self;
 }
 
--(ExpenseCategory) expCategoryfromString:(NSString *) string
+-(NSDate *) dateFromString: (NSString *) string mode: (NSString *) dateMode
+{
+    if ([dateMode isEqualToString:@"date"]) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"MM/dd"];
+        NSDate *transformmedDate = [dateFormatter dateFromString:string];
+        return transformmedDate;
+    } else {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+        NSDate *transformmedDate = [dateFormatter dateFromString:string];
+        return transformmedDate;
+    }
+}
+
+-(ExpenseCategory) expCategoryFromString:(NSString *) string
 {
     if ([string isEqualToString:@"住宿"]) {
         return housing;
@@ -62,7 +114,7 @@ static NSString *const keyUpdatedDate = @"updated_date";
     }
 }
 
--(PaymentMode) paymentModefromString:(NSString *) string
+-(PaymentMode) paymentModeFromString:(NSString *) string
 {
     if ([string isEqualToString:@"刷卡"] || [string isEqualToString:@"信用卡"]) {
         return creditCard;
@@ -78,6 +130,48 @@ static NSString *const keyUpdatedDate = @"updated_date";
         return other;
     }
 }
+
+-(BOOL) shouldSplitTheBillFromString:(NSString *) string
+{
+    if ([string isEqualToString:@"是"] || [string isEqualToString:@"Yes"] ||[string isEqualToString:@"Y"] ||[string isEqualToString:@"yes"] ||[string isEqualToString:@"true"] || [string isEqualToString:@"TRUE"] || [string isEqualToString:@"True"]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+-(BOOL) isBillSplitFromString:(NSString *) string
+{
+    if ([string isEqualToString:@"是"] || [string isEqualToString:@"Yes"] ||[string isEqualToString:@"Y"] ||[string isEqualToString:@"yes"] ||[string isEqualToString:@"true"] || [string isEqualToString:@"TRUE"] || [string isEqualToString:@"True"]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+-(Person*) billPayerFromString: (NSString *) string
+{
+    Person *person = [[Person alloc] init];
+    person.name = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    return person;
+}
+
+-(NSMutableArray <Person *>*) payersFromString: (NSString *) string
+{
+    if (!string || [string isEqualToString:@""]) {
+        return @[];
+    } else {
+        NSArray *names = [string componentsSeparatedByString:@","];
+        NSMutableArray <Person *>* payers = [[NSMutableArray <Person*> alloc] init];
+        for (NSString *name in names) {
+            Person* payer = [self billPayerFromString:name];
+            [payers addObject:payer];
+        }
+        return payers;
+    }
+}
+
+
 
 
 @end

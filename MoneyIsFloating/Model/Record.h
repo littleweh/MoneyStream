@@ -46,8 +46,12 @@ typedef enum : NSUInteger {
 @property (nonatomic, assign, readwrite) NSString * identifier;
 
 -(instancetype) initWithDictionary: (NSDictionary *) dictionary;
--(ExpenseCategory) expCategoryfromString:(NSString *) string;
--(PaymentMode) paymentModefromString:(NSString *) string;
-
+//-(NSDate *) dateFromString: (NSString *) string mode: (NSString *) dateMode;
+//-(ExpenseCategory) expCategoryFromString:(NSString *) string;
+//-(PaymentMode) paymentModeFromString:(NSString *) string;
+//-(BOOL) shouldSplitTheBillFromString:(NSString *) string;
+//-(BOOL) isBillSplitFromString:(NSString *) string;
+//-(Person*) billPayerFromString: (NSString *) string;
+//-(NSMutableArray <Person *>*) payersFromString: (NSString *) string;
 
 @end
