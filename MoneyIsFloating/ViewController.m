@@ -8,6 +8,21 @@
 
 #import "ViewController.h"
 #import "SheetDBSDK.h"
+#import "Record.h"
+
+static NSString *const keyIdentifier = @"key";
+static NSString *const keyDate = @"date";
+static NSString *const keyExpCategory = @"category";
+static NSString *const keyDollarAmount = @"amount";
+static NSString *const keyPaymentMode = @"payment_mode";
+static NSString *const keyExplanation = @"explanation";
+static NSString *const keyStore = @"store";
+static NSString *const keyBillPayer = @"payer";
+static NSString *const keyShouldSplitTheBill = @"should_split_bill";
+static NSString *const keyBillSplitPayers = @"bill_split_payers";
+static NSString *const keyCreatedDate = @"created_date";
+static NSString *const keyIsBillSplit = @"is_bill_split";
+static NSString *const keyUpdatedDate = @"updated_date";
 
 @interface ViewController ()
 
@@ -20,6 +35,93 @@
     [[SheetDBSDK sharedInstance] fetchAllDataWithCallback:^(NSArray <NSDictionary *>* dictionaries, NSError * error) {
         NSLog(@"sheetDBSDK get all data called");
         NSLog(@"%@", [NSString stringWithFormat:@"dic is %@", dictionaries]);
+
+        for (NSDictionary * dic in dictionaries) {
+            Record * record = [[Record alloc]init];
+            record.identifier = [dic objectForKey:keyIdentifier];
+
+            NSString *date = [dic objectForKey:keyDate];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+            [dateFormatter setDateFormat:@"MM/dd"];
+            NSDate *transformmedDate = [dateFormatter dateFromString:date];
+            record.date = transformmedDate;
+
+            NSLog(@"identifier: %@", record.identifier);
+            NSString * dateToShow = [dateFormatter stringFromDate:record.date];
+            NSLog(@"date: %@", dateToShow);
+
+            NSString *store = [dic objectForKey:keyStore];
+            record.store = store;
+            NSLog(@"store: %@", store);
+
+            NSNumber *dollarAmount = [dic objectForKey:keyDollarAmount];
+            record.dollarAmount = dollarAmount;
+            NSLog(@"dollar amount: %@", dollarAmount);
+
+            NSString *explanation = [dic objectForKey:keyExplanation];
+            record.explanation = explanation;
+            NSLog(@"explanation: %@", explanation);
+
+            NSString *expCategoryString = [dic objectForKey:keyExpCategory];
+            ExpenseCategory * category = [record expCategoryfromString:expCategoryString];
+            record.expCategory = category;
+            switch (record.expCategory) {
+                case transportation:
+                    NSLog(@"expense category: %@", @"transportation");
+                    break;
+                case housing:
+                    NSLog(@"expense category: %@", @"housing");
+                    break;
+                case breakfast:
+                    NSLog(@"expense category: %@", @"breakfast");
+                    break;
+                case lunch:
+                    NSLog(@"expense category: %@", @"lunch");
+                    break;
+                case supper:
+                    NSLog(@"expense category: %@", @"supper");
+                    break;
+                case drinks:
+                    NSLog(@"expense category: %@", @"drinks");
+                    break;
+                case entertainment:
+                    NSLog(@"expense category: %@", @"entertainment");
+                    break;
+                case somethingElse:
+                    NSLog(@"expense category: %@", @"somethingElse");
+                    break;
+                default:
+                    NSLog(@"expense category: %@", @"others");
+                    break;
+            }
+
+            NSString *paymentModeString = [dic objectForKey:keyPaymentMode];
+            PaymentMode * paymentMode = [record paymentModefromString:paymentModeString];
+            record.paymentMode = paymentMode;
+
+            switch (record.paymentMode) {
+                case creditCard:
+                    NSLog(@"expense category: %@", @"credit card");
+                    break;
+                case cash:
+                    NSLog(@"expense category: %@", @"cash");
+                    break;
+                case ezCard:
+                    NSLog(@"expense category: %@", @"ezCard");
+                    break;
+                case iCash:
+                    NSLog(@"expense category: %@", @"icash");
+                    break;
+                case iPass:
+                    NSLog(@"expense category: %@", @"iPass");
+                    break;
+                default:
+                    NSLog(@"expense category: %@", @"other");
+                    break;
+            }
+
+        }
+
     }];
     
 }
