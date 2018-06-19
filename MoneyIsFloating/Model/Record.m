@@ -27,7 +27,11 @@ static NSString *const keyUpdatedDate = @"updated_date";
 -(instancetype) initWithDictionary: (NSDictionary *) dictionary
 {
     if(self = [super init]) {
-        _identifier = [dictionary objectForKey:keyIdentifier] ? : @"";
+        if ([[dictionary objectForKey:keyIdentifier] respondsToSelector:@selector(stringValue)]) {
+            _identifier = [[dictionary objectForKey:keyIdentifier] stringValue];
+        } else {
+            _identifier = [NSString stringWithString:[dictionary objectForKey:keyIdentifier]];
+        }
 
         NSMutableString *date = [dictionary objectForKey:keyDate];
         if (date && ![date isEqualToString:@""]) {

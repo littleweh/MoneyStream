@@ -8,6 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "Record.h"
+#import "Person.h"
 
 @interface RecordTest : XCTestCase
 @property (nonatomic, strong) NSDictionary * dictionary;
@@ -54,24 +55,43 @@
 -(void)testInitWithDictionary
 {
     Record *record = [[Record alloc]initWithDictionary:self.dictionary];
+    XCTAssertTrue([record.date isKindOfClass:NSDate.self], @"date type invalid");
+    XCTAssertTrue([record.store isKindOfClass:NSString.self], @"store type invalid");
+    XCTAssertTrue([record.dollarAmount isKindOfClass:NSNumber.self], @"dollar amount type invalid");
+    XCTAssertTrue([record.explanation isKindOfClass:NSString.self], @"explanation type invalid");
+    XCTAssertTrue([record.billSplitPayers isKindOfClass:NSMutableArray.self], @"billSplitPayers type invalid");
+    XCTAssertTrue([record.billPayer isKindOfClass:Person.self], @"billPayer type invalid");
+    XCTAssertTrue([record.createdDate isKindOfClass:NSDate.self], @"createdDate type invalid");
+    XCTAssertTrue(([record.updatedDate isKindOfClass:NSDate.self] || record.updatedDate == nil), @"updatedDate type invalid, which is: %@", [record.updatedDate class]);
+    XCTAssertTrue([record.identifier isKindOfClass:NSString.self], @"identifier type invalid, which is: %@", [record.identifier class]);
 
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
     dateFormatter.dateFormat = @"MM/dd";
     NSDate *date826 = [dateFormatter dateFromString:@"08/26"];
 
-    XCTAssertTrue([record.date isKindOfClass:NSDate.self], @"date type invalid");
     XCTAssertEqual(record.date, date826, @"date wrong");
 
-    dateFormatter.dateFormat = @"MM/dd/yyyy HH:mm:ss";
+    dateFormatter.dateFormat = @"dd/MM/yyyy HH:mm:ss";
     NSDate *dateCreated = [dateFormatter dateFromString: @"24/08/2017 15:03:45"];
 
-    XCTAssertTrue([record.createdDate isKindOfClass:NSDate.self], @"created date type invalid");
-    XCTAssertEqual(record.createdDate, dateCreated, @"created date wrong");
+    XCTAssertEqual(record.createdDate, dateCreated, @"created date wrong, which is %@", [dateFormatter stringFromDate:record.createdDate]);
+    XCTAssertNil(record.updatedDate, @"updatedDate is not nil");
+    XCTAssert(record.expCategory == housing, @"expense category is wrong, which is %lu", (unsigned long)record.expCategory);
+    XCTAssert([record.store isEqualToString:@"嘉義airbnb"], @"store is wrong, which is %@", record.store);
+    XCTAssert([record.dollarAmount isEqualToValue:@2126], @"dollar amount is wrong, which is %@", record.dollarAmount);
+    XCTAssert([record.explanation isEqualToString:@"嘉義airbnb"], @"explanation is wrong, which is %@", record.explanation);
+    XCTAssert(record.paymentMode == creditCard, @"payment mode is wrong, which is %lu", (unsigned long)record.paymentMode);
+    XCTAssertTrue(record.shouldSplitTheBill, @"should split the bill is wrong, which is false");
+    XCTAssertTrue(record.isBillSplit, @"is bill split is wrong, which is false");
 
+    NSArray * names = @[@"ST", @"Ada", @"Ilona"];
+    XCTAssert([record.billSplitPayers[0].name isEqualToString:names[0]], @"billSplitPayer 1 is wrong, which is %@", record.billSplitPayers[0].name);
+    XCTAssert([record.billSplitPayers[1].name isEqualToString: names[1]], @"billSplitPayer 1 is wrong, which is %@", record.billSplitPayers[1].name);
+    XCTAssert([record.billSplitPayers[2].name isEqualToString: names[2]], @"billSplitPayer 1 is wrong, which is %@", record.billSplitPayers[2].name);
 
+    XCTAssertEqual(record.billPayer.name, @"Ada", @"billPayer is wrong, which is %@", record.billPayer.name);
 
-
-    XCTAssert([record.dollarAmount isKindOfClass:NSNumber.self], @"dollarAmount is not NSNumber" );
+    XCTAssert([record.identifier isEqualToString: @"2"], @"identifier is wrong, which is %@", record.identifier);
 
 }
 
