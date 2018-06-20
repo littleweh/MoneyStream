@@ -37,8 +37,6 @@ static NSString *const endPointGetRowCount = @"/count";
 {
     if (!_session) {
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-//        configuration.timeoutIntervalForRequest = 60;
-//        configuration.timeoutIntervalForResource = 60;
         _session = [NSURLSession sessionWithConfiguration:configuration];
     }
     return _session;
@@ -60,6 +58,13 @@ static NSString *const endPointGetRowCount = @"/count";
     NSURL *getAllDataURL = [NSURL URLWithString:sheetDBAPI];
     NSURLSessionDataTask *dataTask = [self.session dataTaskWithURL:getAllDataURL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSLog(@"in completion handler");
+
+        if ([response respondsToSelector:@selector(statusCode)]) {
+            if ([(NSHTTPURLResponse *) response statusCode] == 400) {
+                callback(nil, error);
+                return;
+            }
+        }
 
         NSError * parseJSONError = nil;
         NSArray <NSDictionary *> * jsonRootObjects = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&parseJSONError];
